@@ -1,21 +1,29 @@
 @echo off
-for /F %%i in ('curl -k -s "http://v6.ipv6-test.com/api/myip.php"') do ( set ip6=%%i)
-::get your IPv6 获取你的IPv6
-for /F %%i in ('curl -k -s "http://v4.ipv6-test.com/api/myip.php"') do ( set ip4=%%i)
-::get your IPv4 获取你的IPv4
-set zid=zone_id
-::domain_zone_id 替换为你的zone_id
-set id=id
-::sub_domain_id 替换为你要更新的子域名的id
-set domain=sub_domain
-::sub_domain 替换为你要更新的子域名 such as: www.example.com
-set type=type
-::NS_type 类型{A,AAAA,NS,TXT,.........}
-set email=email
-::your_email 你的Cloudflare注册邮箱
-set authkey=Global API Key
-::your_Global API Key 你的Global API Key
-set ip=ip
-::your IPaddress or your record value 你的IP地址或记录值 such as:%ip4% or %ip6% or 0.0.0.0 or the other 
-::%ip4% or %ip6% is the best choose for DDNS 填入%ip4%或%ip6%来动态更新你的DDNS是最好的选择
-curl -X PUT "https://api.cloudflare.com/client/v4/zones/%zid%/dns_records/%id%" -H "X-Auth-Email: %email%" -H "X-Auth-Key: %authkey%" -H "Content-Type: application/json" --data "{\"type\":\"%type%\",\"name\":\"%domain%\",\"content\":\"%ip%\"}"
+
+:: Define Your Email Address
+set email=user@example.com
+
+:: Define Your Cloudflare API Key
+set api_key=xxxxx
+
+:: Define Your Zone ID
+set zoneid=xxxxxxx
+
+:: Define Your Record ID
+set record_id=xxxxxx
+
+:: Full domain address used for DDNS
+set domain=abc.example.com
+
+:: IPv4 DDNS
+::Get IPv4 Address by fetch API
+for /F %%i in ('curl -k -s "http://ipv4.whatismyip.akamai.com"') do ( set ipv4=%%i)
+
+curl -X PUT "https://api.cloudflare.com/client/v4/zones/%zoneid%/dns_records/%record_id%" -H "X-Auth-Email: %email%" -H "X-Auth-Key: %api_key%" -H "Content-Type: application/json" --data "{\"type\":\"A\",\"name\":\"%domain%\",\"content\":\"%ipv4%\"}"
+
+:: IPv6 DDNS
+
+:: Get IPv6 Address by fetch API
+for /F %%i in ('curl -k -s "http://ipv6.whatismyip.akamai.com"') do ( set ipv6=%%i)
+
+curl -X PUT "https://api.cloudflare.com/client/v4/zones/%zoneid%/dns_records/%record_id%" -H "X-Auth-Email: %email%" -H "X-Auth-Key: %api_key%" -H "Content-Type: application/json" --data "{\"type\":\"AAAA\",\"name\":\"%domain%\",\"content\":\"%ipv6%\"}"
