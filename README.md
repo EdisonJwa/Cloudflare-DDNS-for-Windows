@@ -1,5 +1,5 @@
 # Cloudflare-DDNS-for-Windows
 
-IF you want to use that You need to edit something in the CFDDNS.bat.
+Please Define variables in script before use it.
 
-你需要在CFDDNS.bat中改动一些字段才能使用
+Linux/MacOS version: [EdisonJwa/cloudflare-ddns.sh](https://gist.github.com/EdisonJwa/c7e208fa19de49005d61a2cef0e13489)
